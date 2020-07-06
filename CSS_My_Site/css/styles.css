@@ -11,9 +11,9 @@ h1 {
 /******************class selectors*********************/
 .top-container {
   background-color: #E4F9F5;
-  width: 200px;
+  /*width: 200px;
   height: 200px;
-  border: solid 10px;
+  border: solid 10px;*/
   padding: 20px;
 }
 
@@ -23,14 +23,16 @@ h1 {
   height: 200px;
   margin-left: 260px;
   border: solid 20px;
-  padding: 20px;
 }
 
 .bottom-container {
   background-color: blue;
   width: 200px;
   height: 200px;
-  margin-left: 540px;
+  margin-left: 500px;
   border: solid 10px;
-  padding: 20px;
+}
+
+.pro {
+  text-decoration: underline;
 }
