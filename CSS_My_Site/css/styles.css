@@ -1,20 +1,33 @@
 /* @charset "utf-8"; */
-/*****************tag selectors*********************/
 body {
   margin: 0;
+  text-align: center;
 }
 
 h1 {
   margin-top: 0;
 }
 
-/******************class selectors*********************/
 .top-container {
   background-color: #E4F9F5;
-  /*width: 200px;
-  height: 200px;
-  border: solid 10px;*/
-  padding: 20px;
+  position: relative;
+  padding-top: 100px;
+}
+
+.pro {
+  text-decoration: underline;
+}
+
+.top-cloud {
+  position: absolute;
+  right: 300px;
+  top: 50px;
+}
+
+.bottom-cloud {
+  position: absolute;
+  left: 300px;
+  bottom: 300px;
 }
 
 .middle-container {
@@ -31,8 +44,4 @@ h1 {
   height: 200px;
   margin-left: 500px;
   border: solid 10px;
-}
-
-.pro {
-  text-decoration: underline;
 }
