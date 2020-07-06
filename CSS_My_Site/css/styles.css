@@ -2,10 +2,25 @@
 body {
   margin: 0;
   text-align: center;
+  font-family: 'Merriweather', serif;
 }
 
 h1 {
-  margin-top: 0;
+  margin: 50px auto 0 auto;
+  font-size: 5.625rem;
+  /* font-size: 5.625em; */  /* 1em = 100% = 16px; em: dynamic but inherited*/
+  /* font-size: 562.5%;*/  /* 100%: 16px; %: dynamic but inherited*/
+  /* font-size: 90px;  not dynamic */
+  font-family: 'Sacramento', cursive;
+}
+
+h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-family: 'Montserrat', sans-serif;
 }
 
 .top-container {
