@@ -6,20 +6,25 @@ body {
 }
 
 h1 {
-  margin: 50px auto 0 auto;
+  color: #66BFBF;
+  margin: 50px auto 0 auto;  /* top right bottom left: clockwise; auto means centered; */
+  line-height: 1.1;
+  font-family: 'Sacramento', cursive;
   font-size: 5.625rem;
   /* font-size: 5.625em; */  /* 1em = 100% = 16px; em: dynamic but inherited*/
   /* font-size: 562.5%;*/  /* 100%: 16px; %: dynamic but inherited*/
   /* font-size: 90px;  not dynamic */
-  font-family: 'Sacramento', cursive;
 }
 
 h2 {
+  color: #66BFBF;
   font-family: 'Montserrat', sans-serif;
   font-size: 2.5rem;
+  font-weight: normal;
 }
 
 h3 {
+  color: #11999E;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -27,6 +32,14 @@ h3 {
   background-color: #E4F9F5;
   position: relative;
   padding-top: 100px;
+}
+
+.middle-container {
+
+}
+
+.bottom-container {
+
 }
 
 .pro {
@@ -45,18 +58,12 @@ h3 {
   bottom: 300px;
 }
 
-.middle-container {
-  background-color: red;
-  width: 200px;
+.profile-img {
   height: 200px;
-  margin-left: 260px;
-  border: solid 20px;
+  margin: 50px auto 0 auto;
+  border-radius: 20%;
 }
 
-.bottom-container {
-  background-color: blue;
-  width: 200px;
+.java-img {
   height: 200px;
-  margin-left: 500px;
-  border: solid 10px;
 }
