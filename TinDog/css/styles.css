@@ -30,6 +30,18 @@ p {
   padding: 7% 15%;
 }
 
+/* Sections */
+
+.colored-section {
+  background-color: #ff4c68;
+  color: #fff;
+}
+
+.white-section {
+  background-color: #fff;
+}
+
+
 /* Navigation Bar */
 .navbar {
   padding: 0 0 4.5rem;
@@ -51,13 +63,9 @@ p {
 }
 
 /* Title Section */
-#title {
-  background-color: #ff4c68;
-  color: #fff;
-  text-align: left;
-}
 
 #title .container-fluid {
+  text-align: left;
   padding: 3% 15% 7%;
 }
 
@@ -73,7 +81,6 @@ p {
 
 /* Features Section */
 #features {
-  background-color: #fff;
   position: relative;
   z-index: 1;
 }
@@ -99,12 +106,8 @@ p {
 /* Testmonial Section */
 #testimonials {
   background-color: #ef8172;
-  color: #fff;
-  /* padding: 7% 15%; */
-  /* move it to .carousel-item */
+  /* padding: 7% 15%; */  /* moved it to .carousel-item */
 }
-
-.carousel-item {}
 
 .testimonial-text {
   font-size: 3rem;
@@ -147,13 +150,8 @@ p {
 }
 
 /* CTA Section */
-#cta {
-  background-color: #ff4c68;
-  color: #fff;
-}
 
 /* Footer */
-#footer {}
 
 .social-icon {
   margin: 20px 10px;
@@ -164,9 +162,6 @@ p {
     text-align: center;
   }
 
-  /* h1 {
-    width: 100%;
-  } */
   .title-image {
     position: static;
     transform: rotate(0);
