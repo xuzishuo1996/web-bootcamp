@@ -1,13 +1,21 @@
 const express = require("express");
 const https = require("https"); //native module - do not need npm install
+const bodyParser = require("body-parser");
 
 const app = express();
+app.use(bodyParser.urlencoded({extended: true})); //routine code for using body-parser package
 
 // https://www.twilio.com/blog/2017/08/http-requests-in-node-js.html
 // Use the 1st way: native https
 app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
 
-  const url = "https://api.openweathermap.org/data/2.5/weather?q=London&appid=36b83d1b75707ab79d26fc097f4442b0&units=metric";
+app.post("/", (req, res) => {
+  const query = req.body.cityName;
+  const apiKey = "36b83d1b75707ab79d26fc097f4442b0";
+  const unit ="metric";
+  const url = "https://api.openweathermap.org/data/2.5/weather?q=" + query + "&appid=" + apiKey + "&units=" + unit;
 
   https.get(url, (response) => {
     console.log(response.statusCode);
@@ -27,7 +35,6 @@ app.get("/", (req, res) => {
   }).on("error", (e) => {
     console.error(e);
   });
-
 });
 
 app.listen(3000, (req, res) => {
