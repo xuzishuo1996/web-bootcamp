@@ -12,15 +12,14 @@ app.get("/", (req, res) => {
   https.get(url, (res) => {
     console.log(res.statusCode);
 
-    res.on("data", (data) => {
+    res.on("data", (data) => {  //"data": when received data
       const weatherData = JSON.parse(data);
-      console.log(weatherData);
-      const object = {
-        name: "Angela",
-        favoriteFood: "Apple"
-      }
-      console.log(JSON.stringify(object));
-    })
+      const temp = weatherData.main.temp;
+      const weatherDescription = weatherData.weather[0].description;
+      console.log(temp);
+      console.log(weatherDescription);
+    });
+
   }).on("error", (e) => {
     console.error(e);
   });
