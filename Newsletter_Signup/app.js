@@ -39,19 +39,45 @@ app.post("/", (req, res) => {
     // path: "/", //default is "/"
   }
 
+  // var succeeded = false;
   const request = https.request(url, options, (response) => {
+    if (response.statusCode == 200) {
+      res.sendFile(__dirname + "/success.html");
+    } else {
+      res.sendFile(__dirname + "/failure.html");
+    }
+
     response.on("data", (data) => {
-      console.log(JSON.parse(data));
+      const processedData = JSON.parse(data);
+      console.log(processedData);
+      // if (processedData.errors.length != 0) {
+      //   document.querySelector(".display-4").textContent = e.errors.error;
+      //   // $(".display-4").text(e.errors[0].error);
+      //   res.sendFile(__dirname + "/failure.html");
+      // } else {
+      //   succeeded = true;
+      //   res.sendFile(__dirname + "/success.html");
+      // }
     })
-    res.on('end', () => {
+
+    response.on('end', () => {
       console.log('No more data in response.');
     });
   });
+
   request.on('error', (e) => {
-    console.error(e);
+    console.log(e);
   });
+
+  // if (succeeded) {
+  //   request.write(jsonData);
+  // }
   request.write(jsonData);
   request.end();
+});
+
+app.post("/failure", (req, res) => {
+  res.redirect("/");
 });
 
 app.listen(3000, (req, res) => {
