@@ -9,22 +9,25 @@ app.get("/", (req, res) => {
 
   const url = "https://api.openweathermap.org/data/2.5/weather?q=London&appid=36b83d1b75707ab79d26fc097f4442b0&units=metric";
 
-  https.get(url, (res) => {
-    console.log(res.statusCode);
+  https.get(url, (response) => {
+    console.log(response.statusCode);
 
-    res.on("data", (data) => {  //"data": when received data
+    response.on("data", (data) => {  //"data": when received data
       const weatherData = JSON.parse(data);
       const temp = weatherData.main.temp;
       const weatherDescription = weatherData.weather[0].description;
-      console.log(temp);
-      console.log(weatherDescription);
+      const icon = weatherData.weather[0].icon;
+      const imageURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+      res.write("<h1>The temperature in London is " + temp + " degrees Celcius.</h1>");
+      res.write("<p>The weather is currently " + weatherDescription + "</p>");
+      res.write("<img src=" + imageURL + ">");
+      res.send();
     });
 
   }).on("error", (e) => {
     console.error(e);
   });
 
-  res.send("Server is up and running.");
 });
 
 app.listen(3000, (req, res) => {
