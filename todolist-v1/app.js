@@ -9,39 +9,31 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+var items = ["Buy Food", "Eat Food", "Cook Food"];
+
 app.get("/", (req, res) => {
   var today = new Date();
   var currentDay = today.getDay();
   var day = "";
 
-  switch (currentDay) {
-    case 0:
-      day = "Sunday";
-      break;
-    case 1:
-      day = "Monday";
-      break;
-    case 2:
-      day = "Tuesday";
-      break;
-    case 3:
-      day = "Wednesday";
-      break;
-    case 4:
-      day = "Thursday";
-      break;
-    case 5:
-      day = "Friday";
-      break;
-    case 6:
-      day = "Saturday";
-      break;
-    default:
-      console.log("Error: current day is equal to: " + currentDay);
-  }
+  var options = {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+  };
+  var today  = new Date();
+  var day = today.toLocaleDateString("en-US", options);
+
   res.render("list", {
-    kindofDay: day
+    kindofDay: day,
+    newListItems: items
   });
+});
+
+app.post("/", (req, res) => {
+  var item = req.body.newItem;
+  items.push(item);
+  res.redirect("/");
 });
 
 app.listen(3000, () => {
