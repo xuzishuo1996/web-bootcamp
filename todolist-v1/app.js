@@ -8,11 +8,11 @@ app.set("view engine", "ejs"); //cannot use app.use, follow https://ejs.co
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-let items = ["Buy Food", "Eat Food", "Cook Food"];
-let workItems = [];
+const items = ["Buy Food", "Eat Food", "Cook Food"];
+const workItems = [];
 
 app.get("/", (req, res) => {
-  let day = date.getDate();
+  const day = date.getDate();
 
   res.render("list", {
     listTitle: day,
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-  let item = req.body.newItem;
+  const item = req.body.newItem;
   if (req.body.list === "Work") {
     workItems.push(item);
     res.redirect("/work");
@@ -36,7 +36,7 @@ app.get("/work", (req, res) => {
 });
 
 // app.post("/work", (req, res) => {
-//   let item = req.body.newItem;
+//   const item = req.body.newItem;
 //   workItems.push(item);
 //   res.redirect("work");
 // });

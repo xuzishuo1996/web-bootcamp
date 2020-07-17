@@ -1,10 +1,9 @@
 // console.log(module);
 
 // module.exports = "I am date module";
-module.exports.getDate = getDate;
-function getDate() {
-  let today  = new Date();
-  let options = {
+exports.getDate = function () {
+  const today  = new Date();
+  const options = {
     weekday: 'long',
     day: 'numeric',
     month: 'long'
@@ -12,13 +11,12 @@ function getDate() {
   return today.toLocaleDateString("en-US", options);
 }
 
-module.exports.getDay = getDay;
-function getDay() {
-  // let today = new Date();
+exports.getDay = function () {
+  // const today = new Date();
   // return today.getDay();
 
-  let today = new Date();
-  let options = {
+  const today = new Date();
+  const options = {
     weekday: "long"
   }
   return today.toLocaleDateString("en-US", options);
