@@ -5,24 +5,23 @@ const bodyParser = require("body-parser");
 
 const app = express();
 app.set("view engine", "ejs"); //cannot use app.use, follow https://ejs.co
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static("public"));
 
-var items = ["Buy Food", "Eat Food", "Cook Food"];
+let items = ["Buy Food", "Eat Food", "Cook Food"];
 
 app.get("/", (req, res) => {
-  var today = new Date();
-  var currentDay = today.getDay();
-  var day = "";
+  // let today = new Date();
+  // let currentDay = today.getDay();
+  // let day = "";
 
-  var options = {
+  let options = {
     weekday: 'long',
     day: 'numeric',
     month: 'long'
   };
-  var today  = new Date();
-  var day = today.toLocaleDateString("en-US", options);
+  let today  = new Date();
+  let day = today.toLocaleDateString("en-US", options);
 
   res.render("list", {
     kindofDay: day,
@@ -31,7 +30,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-  var item = req.body.newItem;
+  let item = req.body.newItem;
   items.push(item);
   res.redirect("/");
 });
