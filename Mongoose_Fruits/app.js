@@ -26,18 +26,36 @@ const fruit = new Fruit ({  // a new document
 
 // fruit.save();
 
-// const personSchema = new mongoose.Schema({
-//   name: String,
-//   age: Number
-// });
-//
-// const Person = mongoose.model("Person", personSchema);   //will automatically to people
-//
-// const person = new Person({
-//   name: "John",
-//   age: 37
-// });
+const personSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  favoriteFruit: fruitSchema
+});
 
+const Person = mongoose.model("Person", personSchema);   //will automatically to people
+
+const mango = new Fruit({
+  name : "Mango",
+  score: 6,
+  review: "Decent fruit"
+});
+
+mango.save();
+
+Person.updateOne({name: "John"}, {favoriteFruit: mango}, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Successfully updated the document");
+  }
+});
+
+// const person = new Person({
+//   name: "Amy",
+//   age: 12,
+//   favoriteFruit: pineapple
+// });
+//
 // person.save();
 
 // const kiwi = new Fruit({
