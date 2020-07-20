@@ -41,7 +41,8 @@ mongoose.set('useCreateIndex', true);
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
-  googleId: String //for Google OAuth2.0 only
+  googleId: String, //for Google OAuth2.0 only
+  secret: String
 });
 
 // Level 2: encrypt by a single string instead of two keys using mongoose-encryption
@@ -80,7 +81,7 @@ passport.use(new GoogleStrategy({
   },
   function(accessToken, refreshToken, profile, cb) {
     // console.log(profile);
-    
+
     // see https://stackoverflow.com/questions/20431049/what-is-function-user-findorcreate-doing-and-when-is-it-called-in-passport
     // findOrCreate is pseduo code used in passport doc
     User.findOrCreate({ googleId: profile.id }, function (err, user) {  //func name has to be the same with require statement
@@ -111,8 +112,21 @@ app.get("/register", (req, res) => {
 });
 
 app.get("/secrets", (req, res) => {
+  // see https://stackoverflow.com/questions/4057196/how-do-you-query-for-is-not-null-in-mongo
+  User.find({"secret": {$ne:null}}, (err, foundUsers) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUsers) {
+        res.render("secrets", {usersWithSecrets: foundUsers});
+      }
+    }
+  });
+});
+
+app.get("/submit", (req, res) => {
   if (req.isAuthenticated()) {
-    res.render("secrets");  //secrets.ejs
+    res.render("submit");  //secrets.ejs
   } else {
     res.redirect("/login");
   }
@@ -154,6 +168,24 @@ app.post("/login", (req, res) => {
       passport.authenticate("local")(req, res, () => {
         res.redirect("secrets");
       });
+    }
+  });
+});
+
+app.post("/submit", (req, res) => {
+  const submittedSecret = req.body.secret;
+
+  // console.log(req.user);
+  User.findById(req.user.id, (err, foundUser) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        foundUser.secret = submittedSecret;
+        foundUser.save(() => {
+          res.redirect("/secrets");
+        });
+      }
     }
   });
 });
