@@ -1,21 +1,30 @@
+require('dotenv').config(); //As early as possible in your application, require and configure dotenv.
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const encrypt = require("mongoose-encryption");
 
 const app = express();
+
+// console.log(process.env.API_KEY);
 
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 
-//db: userDB
+// db: userDB
 mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true, useUnifiedTopology: true});
 
-const userSchema = {
+// encryption: see https://www.npmjs.com/package/mongoose-encryption - Secret String Instead of Two Keys part
+// encrypt on save() and decypt on find()
+const userSchema = new mongoose.Schema({
   email: String,
   password: String
-}
+});
+
+//encrypt by a single string instead of two keys
+userSchema.plugin(encrypt, {secret: process.env.API_KEY, encryptedFields: ["password"]});
 
 //create a collection: users
 const User = new mongoose.model("User", userSchema);
@@ -65,6 +74,7 @@ app.post("/register", (req, res) => {
     }
   });
 });
+
 app.listen(3000, () => {
   console.log("Server started on port 3000.");
 });
