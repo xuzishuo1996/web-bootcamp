@@ -13,6 +13,10 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+
+const findOrCreate = require("mongoose-findorcreate");
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -36,7 +40,8 @@ mongoose.set('useCreateIndex', true);
 // encrypt on save() and decypt on find()
 const userSchema = new mongoose.Schema({
   email: String,
-  password: String
+  password: String,
+  googleId: String //for Google OAuth2.0 only
 });
 
 // Level 2: encrypt by a single string instead of two keys using mongoose-encryption
@@ -44,18 +49,58 @@ const userSchema = new mongoose.Schema({
 
 // Level 5: cookie and session
 userSchema.plugin(passportLocalMongoose);
+// Level 6: Google OAuth2.0
+userSchema.plugin(findOrCreate);  //mongoose-findorcreate package
 
 //create a collection: users
 const User = new mongoose.model("User", userSchema);
 
 // for cookie and sessions - see https://www.npmjs.com/package/passport-local-mongoose: configure passport part
 passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+// below 2 only for local to create cookies
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+
+// for local and other strategies
+// see  http://www.passportjs.org/docs/configure/ sessions part
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/secrets",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo" // see https://github.com/jaredhanson/passport-google-oauth2/pull/51
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    // console.log(profile);
+    
+    // see https://stackoverflow.com/questions/20431049/what-is-function-user-findorcreate-doing-and-when-is-it-called-in-passport
+    // findOrCreate is pseduo code used in passport doc
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {  //func name has to be the same with require statement
+      return cb(err, user);
+    });
+  }
+));
 
 app.get("/", (req, res) => {
   res.render("home"); //home.ejs
 });
+
+// see for below 2 requests: http://www.passportjs.org/packages/passport-google-oauth20/  Authenticate Requests part
+app.get("/auth/google", passport.authenticate("google", { scope: ["profile"] }));
+
+app.get("/auth/google/secrets",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  function(req, res) {
+    res.redirect("/secrets");
+  });
 
 app.get("/login", (req, res) => {
   res.render("login"); //login.ejs
